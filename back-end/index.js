@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const server = express();
 
 server.use(bodyParser.json());
@@ -17,29 +18,31 @@ server.post("/employees", (req, res) => {
 //route to return list of all employees
 server.get("/employees", (req, res) => {
   res.send(employees);
-})
+});
 
 //route to return employees by role
 server.get("/employees/:role", (req, res) => {
   const role = req.params.role;
-  const results = employees.filter(employee => employee.role.toUpperCase() === role.toUpperCase());
+  const results = employees.filter(
+    (employee) => employee.role.toUpperCase() === role.toUpperCase()
+  );
 
   res.send(results);
-})
+});
 
 //route to return employees by id
 server.get("/employees/:id", (req, res) => {
   const eId = req.params.id;
-  const results = employees.filter(emp => emp.eId === eId);
+  const results = employees.filter((emp) => emp.eId === eId);
 
   res.send(results);
-})
+});
 
 //route to change employees information by id
 server.put("/employees/:id", (req, res) => {
   const id = req.params.id;
   const employee = req.body;
-  let result = employees.filter(emp => emp.eId === id)
+  let result = employees.filter((emp) => emp.eId === id);
   if (employee.fName !== undefined) {
     result[0].fName = employee.fName;
   }
@@ -53,7 +56,7 @@ server.put("/employees/:id", (req, res) => {
     result[0].role = employee.role;
   }
   res.send(result[0]);
-})
+});
 
 //route to delete employees by id
 server.delete("/employees/:id", (req, res) => {
@@ -65,10 +68,10 @@ server.delete("/employees/:id", (req, res) => {
       empIdx = idx;
       return;
     }
-  })
+  });
   if (empIdx === -1) {
     return res.status(404).send("Employee not found");
   }
   employees.splice(empIdx, 1);
-  res.send({success: "Success"});
-})
+  res.send({ success: "Success" });
+});
